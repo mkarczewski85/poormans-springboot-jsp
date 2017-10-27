@@ -22,6 +22,7 @@
                     <th>Comment</th>
                     <th>Priority</th>
                     <th>Date created</th>
+                    <th>Deadline date</th>
                     <th>Actions</th>
                 </tr>
                 </thead>

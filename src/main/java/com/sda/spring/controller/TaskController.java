@@ -27,24 +27,34 @@ public class TaskController {
     }
 
     @RequestMapping("/new")
-    public ModelAndView newTaskForm(ModelAndView modelAndView){
+    public ModelAndView newTaskForm(ModelAndView modelAndView) {
         modelAndView.addObject("task", new Task());
         modelAndView.setViewName("taskForm");
         return modelAndView;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ModelAndView addNewTask(@Valid @ModelAttribute("task") Task task, ModelAndView modelAndView){
+    public ModelAndView addNewTask(@Valid @ModelAttribute("task") Task task, ModelAndView modelAndView) {
         taskFacade.save(task);
         return prepareTaskList(modelAndView);
     }
 
     @RequestMapping("/delete")
-    public ModelAndView deleteTask(@RequestParam("id") String id, ModelAndView modelAndView){
+    public ModelAndView deleteTask(@RequestParam("id") String id, ModelAndView modelAndView) {
         Long taskId = Long.parseLong(id);
         taskFacade.deleteTaskById(taskId);
         return prepareTaskList(modelAndView);
     }
+
+    @RequestMapping("/edit")
+    public ModelAndView editTask(@RequestParam("id") String id, ModelAndView modelAndView) {
+        Long taskId = Long.parseLong(id);
+        Task task = taskFacade.findTaskById(taskId);
+        modelAndView.addObject("task", task);
+        modelAndView.setViewName("taskForm");
+        return modelAndView;
+    }
+
 
     @RequestMapping("/generateData")
     @ResponseBody
@@ -61,7 +71,7 @@ public class TaskController {
         return prepareTaskList(modelAndView);
     }
 
-    private ModelAndView prepareTaskList(ModelAndView modelAndView){
+    private ModelAndView prepareTaskList(ModelAndView modelAndView) {
         modelAndView.addObject("tasks", taskFacade.findAll());
         modelAndView.setViewName("list");
         return modelAndView;
